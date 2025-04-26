@@ -89,87 +89,96 @@ export default function Layout({ children }: LayoutProps) {
           <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto scrollbar-hide">
             <div className="mb-6">
               <p className="px-3 text-xs font-medium text-textSecondary uppercase tracking-wider mb-2">Main</p>
-              <Link href="/dashboard">
-                <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+              <Link 
+                href="/dashboard" 
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                   location === '/dashboard' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                } group`}>
-                  <i className={`fas fa-chart-line mr-3 ${location === '/dashboard' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                  Dashboard
-                </a>
+                } group`}
+              >
+                <i className={`fas fa-chart-line mr-3 ${location === '/dashboard' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                Dashboard
               </Link>
-              <Link href="/channels">
-                <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
+              <Link 
+                href="/channels"
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
                   location === '/channels' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                } group`}>
-                  <i className={`fas fa-tv mr-3 ${location === '/channels' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                  Active Channels
-                </a>
+                } group`}
+              >
+                <i className={`fas fa-tv mr-3 ${location === '/channels' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                Active Channels
               </Link>
-              <Link href="/license">
-                <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
+              <Link 
+                href="/license"
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
                   location === '/license' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                } group`}>
-                  <i className={`fas fa-key mr-3 ${location === '/license' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                  License Keys
-                </a>
+                } group`}
+              >
+                <i className={`fas fa-key mr-3 ${location === '/license' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                License Keys
               </Link>
-              <Link href="/activity">
-                <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
+              <Link 
+                href="/activity"
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
                   location === '/activity' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                } group`}>
-                  <i className={`fas fa-history mr-3 ${location === '/activity' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                  Activity Logs
-                </a>
+                } group`}
+              >
+                <i className={`fas fa-history mr-3 ${location === '/activity' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                Activity Logs
               </Link>
             </div>
 
             {user && user.role === 'admin' && (
               <div className="mb-6">
                 <p className="px-3 text-xs font-medium text-textSecondary uppercase tracking-wider mb-2">Administration</p>
-                <Link href="/admin">
-                  <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                <Link 
+                  href="/admin"
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                     location === '/admin' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                  } group`}>
-                    <i className={`fas fa-user-shield mr-3 ${location === '/admin' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                    Admin Panel
-                  </a>
+                  } group`}
+                >
+                  <i className={`fas fa-user-shield mr-3 ${location === '/admin' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                  Admin Panel
                 </Link>
-                <Link href="/admin/keys">
-                  <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
+                <Link 
+                  href="/admin/keys"
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
                     location === '/admin/keys' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                  } group`}>
-                    <i className={`fas fa-key mr-3 ${location === '/admin/keys' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                    Key Management
-                  </a>
+                  } group`}
+                >
+                  <i className={`fas fa-key mr-3 ${location === '/admin/keys' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                  Key Management
                 </Link>
-                <Link href="/admin/users">
-                  <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
+                <Link 
+                  href="/admin/users"
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
                     location === '/admin/users' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                  } group`}>
-                    <i className={`fas fa-users mr-3 ${location === '/admin/users' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                    User Management
-                  </a>
+                  } group`}
+                >
+                  <i className={`fas fa-users mr-3 ${location === '/admin/users' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                  User Management
                 </Link>
               </div>
             )}
 
             <div>
               <p className="px-3 text-xs font-medium text-textSecondary uppercase tracking-wider mb-2">Settings</p>
-              <Link href="/settings">
-                <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+              <Link 
+                href="/settings"
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                   location === '/settings' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                } group`}>
-                  <i className={`fas fa-cog mr-3 ${location === '/settings' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                  Settings
-                </a>
+                } group`}
+              >
+                <i className={`fas fa-cog mr-3 ${location === '/settings' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                Settings
               </Link>
-              <Link href="/support">
-                <a className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
+              <Link 
+                href="/support"
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md mt-1 ${
                   location === '/support' ? 'bg-primary bg-opacity-20 text-white' : 'text-textSecondary hover:text-white hover:bg-surfaceLight'
-                } group`}>
-                  <i className={`fas fa-question-circle mr-3 ${location === '/support' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
-                  Help &amp; Support
-                </a>
+                } group`}
+              >
+                <i className={`fas fa-question-circle mr-3 ${location === '/support' ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`}></i>
+                Help &amp; Support
               </Link>
             </div>
           </nav>
