@@ -13,6 +13,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { TwitchLoginButton } from '@/components/TwitchLoginButton';
 
 const profileSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -157,26 +158,28 @@ export default function Settings() {
 
   // Connect to Twitch function
   const connectTwitch = async () => {
-    setIsConnectingTwitch(true);
-    try {
-      // In a real app, this would initiate Twitch OAuth
-      // For now just simulate a successful connection
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
-      toast({
-        title: "Twitch Connected",
-        description: "Your Twitch account has been successfully connected.",
-      });
-    } catch (error) {
-      toast({
-        title: "Connection Failed",
-        description: "Failed to connect to Twitch. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsConnectingTwitch(false);
+    // If already connected, disconnect
+    if (user?.twitchUsername) {
+      setIsConnectingTwitch(true);
+      try {
+        await apiRequest('POST', '/api/auth/twitch/disconnect');
+        
+        queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
+        toast({
+          title: "Twitch Disconnected",
+          description: "Your Twitch account has been disconnected.",
+        });
+      } catch (error) {
+        toast({
+          title: "Disconnection Failed",
+          description: "Failed to disconnect your Twitch account. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsConnectingTwitch(false);
+      }
     }
+    // If not connected, we'll use the TwitchLoginButton component which handles the OAuth flow
   };
 
   // Form submissions
@@ -521,29 +524,33 @@ export default function Settings() {
                         </div>
                       </div>
                       
-                      <Button
-                        variant={user?.twitchUsername ? 'destructive' : 'default'}
-                        className={user?.twitchUsername ? '' : 'gradient-premium'}
-                        onClick={connectTwitch}
-                        disabled={isConnectingTwitch}
-                      >
-                        {isConnectingTwitch ? (
-                          <>
-                            <i className="fas fa-circle-notch fa-spin mr-2"></i>
-                            Connecting...
-                          </>
-                        ) : user?.twitchUsername ? (
-                          <>
-                            <i className="fas fa-unlink mr-2"></i>
-                            Disconnect
-                          </>
-                        ) : (
-                          <>
-                            <i className="fas fa-link mr-2"></i>
-                            Connect
-                          </>
-                        )}
-                      </Button>
+                      {user?.twitchUsername ? (
+                        <Button
+                          variant="destructive"
+                          onClick={connectTwitch}
+                          disabled={isConnectingTwitch}
+                        >
+                          {isConnectingTwitch ? (
+                            <>
+                              <i className="fas fa-circle-notch fa-spin mr-2"></i>
+                              Disconnecting...
+                            </>
+                          ) : (
+                            <>
+                              <i className="fas fa-unlink mr-2"></i>
+                              Disconnect
+                            </>
+                          )}
+                        </Button>
+                      ) : (
+                        <TwitchLoginButton
+                          variant="default"
+                          className="gradient-premium"
+                          onSuccess={() => {
+                            queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
+                          }}
+                        />
+                      )}
                     </div>
                     
                     {/* Discord Connection - Placeholder */}

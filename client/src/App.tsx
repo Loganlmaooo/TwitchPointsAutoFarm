@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
 import Login from "@/pages/login";
+import TwitchCallback from "@/pages/twitch-callback";
 import Channels from "@/pages/channels";
 import License from "@/pages/license";
 import Activity from "@/pages/activity";
@@ -21,6 +22,7 @@ function Router() {
     <Switch>
       {/* Auth pages */}
       <Route path="/login" component={Login} />
+      <Route path="/twitch/callback" component={TwitchCallback} />
       
       {/* Main pages */}
       <Route path="/" component={Dashboard} />

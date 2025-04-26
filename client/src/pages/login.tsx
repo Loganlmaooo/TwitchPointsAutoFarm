@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
+import { TwitchLoginButton } from '@/components/TwitchLoginButton';
 
 const loginSchema = z.object({
   username: z.string().min(3, 'Username is required'),
@@ -255,6 +257,13 @@ export default function Login() {
               <div className="text-sm text-center text-textSecondary">
                 <p>Need a license key? Contact an authorized reseller.</p>
               </div>
+              
+              <div className="w-full">
+                <Separator className="my-2" />
+                <p className="text-center text-sm my-2">Or continue with</p>
+                <TwitchLoginButton className="w-full" />
+              </div>
+              
               <div className="premium-border w-full">
                 <Button variant="ghost" className="w-full bg-surfaceLight hover:bg-gray-800 border-0" onClick={() => window.open('https://twitch.tv', '_blank')}>
                   <i className="fab fa-twitch mr-2 text-primary"></i>
