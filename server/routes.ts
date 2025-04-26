@@ -149,6 +149,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Build Twitch OAuth URL
       const clientId = config.twitch.clientId;
       const redirectUri = config.twitch.redirectUri || `${req.protocol}://${req.get('host')}/api/auth/twitch/callback`;
+      
+      // Check if Twitch credentials are configured
+      if (!clientId) {
+        console.warn('Twitch client ID is not configured');
+      }
+      
       const scope = 'user:read:email channel:read:subscriptions';
       
       const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}&state=${state}`;

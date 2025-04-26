@@ -521,6 +521,11 @@ export default function Settings() {
                               ? `Connected as ${user.twitchUsername}` 
                               : 'Not connected'}
                           </p>
+                          {!user?.twitchUsername && (
+                            <p className="text-xs text-amber-500 mt-1">
+                              * Requires Twitch API credentials to be configured
+                            </p>
+                          )}
                         </div>
                       </div>
                       

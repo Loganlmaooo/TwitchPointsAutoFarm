@@ -28,6 +28,16 @@ export function TwitchLoginButton({
       const data = await response.json();
       
       if (data.url) {
+        // Check if client ID is missing in the URL (after client_id=)
+        if (data.url.includes('client_id=&')) {
+          toast({
+            title: 'Configuration Error',
+            description: 'Twitch API credentials are not configured. Please check the README for setup instructions.',
+            variant: 'destructive',
+          });
+          return;
+        }
+        
         // Open Twitch OAuth in a new window
         window.location.href = data.url;
       } else {
