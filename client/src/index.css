@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 272 75% 60%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 47 100% 50%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 273 68% 59%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+
+  /* Chart colors */
+  --chart-1: 272 75% 60%;
+  --chart-2: 47 100% 50%;
+  --chart-3: 208 90% 54%;
+  --chart-4: 334 85% 55%;
+  --chart-5: 130 60% 50%;
+  
+  /* Sidebar colors */
+  --sidebar-background: 240 10% 3.9%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 272 75% 60%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 47 100% 50%;
+  --sidebar-accent-foreground: 24 9.8% 10%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 272 75% 60%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/* Custom classes for premium UI */
+@layer components {
+  .premium-border {
+    @apply relative rounded-md overflow-hidden;
+  }
+  
+  .premium-border::before {
+    content: "";
+    @apply absolute inset-0 rounded-md p-[1px];
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .gradient-premium {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  }
+  
+  .gradient-gold {
+    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(47, 97%, 40%) 100%);
+  }
+  
+  .shadow-premium {
+    box-shadow: 0 4px 20px rgba(155, 71, 255, 0.25);
+  }
+  
+  .shadow-gold {
+    box-shadow: 0 4px 20px rgba(230, 194, 0, 0.25);
+  }
+}
+
+/* Hide scrollbar for clean UI */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animation for stats counters */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
