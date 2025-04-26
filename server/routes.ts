@@ -171,6 +171,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Handle Twitch callback at /callback (the URI configured in the Twitch Developer Console)
+  app.get("/callback", async (req, res) => {
+    try {
+      const { code, state } = req.query as { code?: string, state?: string };
+      
+      // Validate state to prevent CSRF attacks
+      if (!state || state !== req.session.twitchState) {
+        return res.status(400).json({ message: "Invalid state parameter" });
+      }
+      
+      if (!code) {
+        return res.status(400).json({ message: "Authorization code is required" });
+      }
+      
+      // Exchange code for access token
+      const tokenData = await twitchAPI.getAccessToken(code as string);
+      
+      // Get Twitch user info
+      const twitchUser = await twitchAPI.getUserInfo(tokenData.access_token);
+      
+      // Check if we have this Twitch user in our database
+      let user = await storage.getUserByTwitchId(twitchUser.id);
+      
+      if (user) {
+        // User exists, update Twitch credentials
+        user = await storage.updateUser(user.id, {
+          twitchUsername: twitchUser.login,
+          twitchAccessToken: tokenData.access_token,
+          twitchRefreshToken: tokenData.refresh_token,
+          twitchTokenExpiry: new Date(Date.now() + tokenData.expires_in * 1000)
+        });
+      } else if (req.session.userId) {
+        // User is logged in but not connected to Twitch yet
+        const existingUser = await storage.getUser(req.session.userId);
+        if (existingUser) {
+          user = await storage.updateUser(existingUser.id, {
+            twitchId: twitchUser.id,
+            twitchUsername: twitchUser.login,
+            twitchAccessToken: tokenData.access_token,
+            twitchRefreshToken: tokenData.refresh_token,
+            twitchTokenExpiry: new Date(Date.now() + tokenData.expires_in * 1000)
+          });
+        }
+      } else {
+        // New user via Twitch, create account
+        const newUserData = {
+          username: twitchUser.login,
+          password: crypto.randomBytes(16).toString('hex'), // Generate random password
+          email: twitchUser.email || `${twitchUser.login}@twitch.tv`,
+          twitchId: twitchUser.id,
+          twitchUsername: twitchUser.login,
+          twitchAccessToken: tokenData.access_token,
+          twitchRefreshToken: tokenData.refresh_token,
+          twitchTokenExpiry: new Date(Date.now() + tokenData.expires_in * 1000)
+        };
+        
+        user = await storage.createUser(newUserData);
+      }
+      
+      // Set session
+      if (user) {
+        req.session.userId = user.id;
+        
+        // Redirect to frontend
+        res.redirect('/dashboard');
+      } else {
+        // Something went wrong
+        res.status(500).json({ message: "Failed to create or update user" });
+      }
+    } catch (error) {
+      console.error('Twitch callback error:', error);
+      res.status(500).json({ message: "Failed to authenticate with Twitch" });
+    }
+  });
+  
+  // Keep the original callback endpoint for backward compatibility
   app.get("/api/auth/twitch/callback", async (req, res) => {
     try {
       const { code, state } = req.query as { code?: string, state?: string };
