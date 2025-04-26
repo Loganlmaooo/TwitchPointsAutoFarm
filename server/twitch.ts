@@ -25,7 +25,15 @@ export class TwitchAPI {
   constructor() {
     this.clientId = config.twitch.clientId;
     this.clientSecret = config.twitch.clientSecret;
-    this.redirectUri = config.twitch.redirectUri || `${config.appUrl}/twitch/callback`;
+    
+    // Use the configured redirect URI or fall back to the API endpoint
+    if (config.twitch.redirectUri) {
+      this.redirectUri = config.twitch.redirectUri;
+      console.log(`TwitchAPI using configured redirect URI: ${this.redirectUri}`);
+    } else {
+      this.redirectUri = `${config.appUrl}/api/auth/twitch/callback`;
+      console.log(`TwitchAPI using default redirect URI: ${this.redirectUri}`);
+    }
   }
 
   async getAccessToken(code: string): Promise<TwitchAuthResponse> {
